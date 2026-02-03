@@ -1,2 +1,2 @@
-# scNanoTrick
-Chromatin Binding Assessment and RNA Transcription Profiling
+# scNanoTriCK: simultaneous measurement of short‑read RNA expression and long‑read chromatin (ChIP) signals at single‑cell resolution
+A nanopore-based platform that simultaneously profiles gene expression and long-read histone modifications at single-cell resolution. This innovative method overcomes limitations of short-read techniques by enabling comprehensive, allele-specific, and structural analysis of chromatin states, even from extremely low-input samples.
