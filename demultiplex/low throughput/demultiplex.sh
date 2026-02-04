@@ -1,23 +1,16 @@
 conda activate nanopore
 
 
+minimap2_index="/data/ass/genome_file/gencode_ensembl/minimap2_index/hg38/hg38_ont.mmi"
+
+
 #generate barcode index file
 bash dual_barcode.sh bc_index
 
-
-#清除系统缓存
-sudo sync && sudo echo 3 | sudo tee /proc/sys/vm/drop_caches
-#strace可以用于debug
-#strace -e trace=file nanoplexer -b barcode.fa -t 1 -p raw_data small_fastq.gz 2>&1 | grep -i "open\|write\|cache"
-
-#demultiplex
-export LD_PRELOAD=$CONDA_PREFIX/lib/libgcc_s.so.1
-ulimit -n 100000
 mkdir raw_data
 nanoplexer -b barcode.fa -t 80 -p raw_data/ pass.fastq.gz
 echo "Demultiplex finished! Compressing data ..."
 rm raw_data/unclassified.fastq
-
 
 
 #cut adaptor
@@ -79,7 +72,7 @@ find trim/ -name "*fastq.gz" | parallel -j 64 '
 		-ax map-ont \
 		--secondary=no \
 		-K 500M \
-		/data/ass/genome_file/gencode_ensembl/minimap2_index/hg38/hg38_ont.mmi \
+		$minimap2_index \
 		trim/${base}.fastq.gz 2> mapping/${base}_mm2.log | samtools view -o mapping/${base}_mm2.bam
 '
 
@@ -202,11 +195,6 @@ tabix merged_results/merged_fragment.bed.gz
 zcat merged_results/merged_fragment.bed.gz | awk -v OFS="\t" '$3-$2 > 1000 {print $0}' > merged_results/merged_flt_fragment.bed
 bgzip merged_results/merged_flt_fragment.bed
 tabix merged_results/merged_flt_fragment.bed.gz
-
-
-#callpeak
-mkdir callpeak
-macs2 callpeak -t merged_results/merged_flank.bed -n merged -f BED -g 2700000000 -q 0.1 --nomodel --extsize 150 --shift -75 --nolambda --keep-dup all --max-gap 150 --broad --outdir macs2
 
 
 
