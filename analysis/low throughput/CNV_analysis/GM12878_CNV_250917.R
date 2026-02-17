@@ -17,11 +17,6 @@ frag_files <- c(
 frag_files <- frag_files[grep("O78|O9[5,6]|O88", frag_files)]
 names(frag_files) <- gsub("(.*)_flt_fragment.bed","\\1",basename(frag_files))
 
-frag_files
-
-
-
-
 library(pbmcapply)
 
 frag <- pbmclapply(names(frag_files), function(x) {
@@ -54,9 +49,6 @@ cell_used <- duprm_stats_GM12878[duprm_stats_GM12878$read_counts>=1000,"cell"]
 
 library(gUtils)
 frag_gr <- dt2gr(frag[frag$cell %in% cell_used, ])
-
-frag_gr
-
 
 bins <- read.table('/data/ass/genome_file/gencode_ensembl/fasta_hg38/ENSEMBL_2Mb_bin.txt')
 colnames(bins) <- c("chrom","start","end")
@@ -92,9 +84,6 @@ nrow(frag_cov_bins[frag_cov_bins$bin_pct>0.7,])/nrow(frag_cov_bins)
 
 cell_pass <- frag_cov_bins[frag_cov_bins$bin_pct>0.2,]$cell
 
-summary(frag_cov_bins$bin_pct)
-
-
 ggplot(frag_cov_bins, aes(x = bin_pct)) +
   geom_density() + geom_vline(xintercept = 0.7) +
   theme_bw()
@@ -112,10 +101,6 @@ row_ann <- data.frame(
   nFrags = log10(duprm_stats_GM12878$read_counts)
 )
 
-
-head(row_ann)
-
-
 col_ann <- data.frame(
   row.names = 1:nrow(bins),
   chrom = bins$chrom
@@ -127,8 +112,6 @@ unique(bins$chrom)
 
 protein_cols <- setNames(brewer.pal(12,"Set3")[c(10,5)],c('H3K9me3','LaminB1'))
 chr_cols <- setNames(c(rep(c("black","grey"),11),"black"), paste0("chr",c(1:22,"X")))
-# hap_cols <- setNames(brewer.pal(9,"Set1")[c(2,1)],c('pat','mat'))
-
 
 K9_cells <- intersect(rownames(row_ann[row_ann$protein == "H3K9me3",]),cell_pass)
 LB1_cells <- intersect(rownames(row_ann[row_ann$protein == "LaminB1",]),cell_pass)
@@ -136,23 +119,19 @@ LB1_cells <- intersect(rownames(row_ann[row_ann$protein == "LaminB1",]),cell_pas
 K9_cells <- rownames(slice_max(row_ann[K9_cells,], order_by = nFrags, n=192))
 LB1_cells <- rownames(slice_max(row_ann[LB1_cells,], order_by = nFrags, n=192))
 
-
 row_sums <- rowSums(frag_cov_mtx, na.rm = TRUE)
 frag_cov_mtx_lib_norm <- sweep(frag_cov_mtx, 1, row_sums, "/")
 
 H3K9me3_norm_vec <- colSums(frag_cov_mtx[K9_cells,], na.rm = T)/sum(frag_cov_mtx[K9_cells,], na.rm = T)
 LaminB1_norm_vec <- colSums(frag_cov_mtx[LB1_cells,], na.rm = T)/sum(frag_cov_mtx[LB1_cells,], na.rm = T)
 
-
 H3K9me3_frag_cov_mtx_lib_norm_bulk_norm <- t(t(frag_cov_mtx_lib_norm[K9_cells, ])/H3K9me3_norm_vec)
 H3K9me3_frag_cov_mtx_lib_norm_bulk_norm[H3K9me3_frag_cov_mtx_lib_norm_bulk_norm >= 0.75 & H3K9me3_frag_cov_mtx_lib_norm_bulk_norm <= 1.25] <- 1
 H3K9me3_frag_cov_mtx_lib_norm_bulk_norm[H3K9me3_frag_cov_mtx_lib_norm_bulk_norm > 1.5] <- 2
 
-
 LaminB1_frag_cov_mtx_lib_norm_bulk_norm <- t(t(frag_cov_mtx_lib_norm[LB1_cells, ])/LaminB1_norm_vec)
 LaminB1_frag_cov_mtx_lib_norm_bulk_norm[LaminB1_frag_cov_mtx_lib_norm_bulk_norm >= 0.75 & LaminB1_frag_cov_mtx_lib_norm_bulk_norm <= 1.25] <- 1
 LaminB1_frag_cov_mtx_lib_norm_bulk_norm[LaminB1_frag_cov_mtx_lib_norm_bulk_norm > 1.5] <- 2
-
 
 pheatmap(H3K9me3_frag_cov_mtx_lib_norm_bulk_norm[K9_cells,],
   show_rownames = T, show_colnames = F,
@@ -164,7 +143,6 @@ pheatmap(H3K9me3_frag_cov_mtx_lib_norm_bulk_norm[K9_cells,],
   breaks = seq(0,2,length.out = 100),
   color = colorRampPalette(rev(brewer.pal(11,"RdBu")))(100)
 )
-
 
 pheatmap(LaminB1_frag_cov_mtx_lib_norm_bulk_norm[LB1_cells,],
   show_rownames = T, show_colnames = F,
