@@ -32,6 +32,16 @@ multiBigwigSummary BED-file \
     -p 60 \
     --outRawCounts GM12878_H3K9me3_heterochromatin_domain_correlation_cor.tab
 
+#GM12878 LaminB1
+multiBigwigSummary BED-file \
+    --BED lad_bins_50kb_merge_adjacent_region.bed \
+    -b GM12878_LaminB1_merged_flt_slop_RPGC_normalization_log2.bw \
+       GSM9146382_pADamID-GM12878_DMSO_r1_Lmnb1-20kb_hg38.bw \
+       GSM9146386_pADamID-GM12878_DMSO_rep2_Lmnb1-20kb_hg38.bw \
+    --labels GM12878_LaminB1_scNanoTriCK_merged pADamID_LaminB1_rep1 pADamID_LaminB1_rep2 \
+    -out GM12878_pADamID_LaminB1_LAD_correlation.npz \
+    -p 60 \
+    --outRawCounts GM12878_pADamID_LaminB1_LAD_correlation_cor.tab
 
 
 
