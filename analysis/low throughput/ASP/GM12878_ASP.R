@@ -173,20 +173,10 @@ p <- ggplot(asp_counts_df$GM12878_H3K9me3, aes(x = log10(total_frags), y = pat_r
   theme(panel.grid = element_blank())
 p
 
-
-
-
-
-
 asp_df <- lapply(asp_counts_df, function(df){
   df[!is.na(df$fdr) & df$fdr < 0.05,] %>% droplevels()
 })
 names(peak_set)
-
-summary(asp_counts_df$GM12878_LaminB1[asp_counts_df$GM12878_LaminB1$significance != "N.S.",]$total_frags)
-summary(asp_counts_df$GM12878_H3K9me3[asp_counts_df$GM12878_H3K9me3$significance != "N.S.",]$total_frags)
-
-
 
 asp_chr_sum <- lapply(names(peak_set), function(x) {
   pk_sum <- table(peak_set[[x]]$chrom) %>%
@@ -210,23 +200,10 @@ asp_chr_sum <- lapply(names(peak_set), function(x) {
 })
 names(asp_chr_sum) <- names(peak_set)
 
-asp_chr_sum$GM12878_LaminB1
-
-
-
 asp_chr_sum_m <- lapply(asp_chr_sum, function(df) reshape2::melt(df[,c(1,6:8)]))
-
 
 asp_chr_sum_m$GM12878_LaminB1$chrom <- factor(asp_chr_sum_m$GM12878_LaminB1$chrom, levels = paste0("chr",c(1:22, "X")))
 asp_chr_sum_m$GM12878_H3K9me3$chrom <- factor(asp_chr_sum_m$GM12878_H3K9me3$chrom, levels = paste0("chr",c(1:22, "X")))
-
-
-
-asp_chr_sum_m$GM12878_LaminB1$chrom
-
-
-
-
 
 library(patchwork)
 p1 <- ggplot(asp_chr_sum_m$GM12878_LaminB1, aes(x = chrom, y = value * 100)) +
@@ -293,10 +270,6 @@ p1 <- ggplot(asp_chr_sum_absolute_count$GM12878_H3K9me3, aes(x = chrom, y = valu
   )
 p1
 
-
-
-
-
 asp_counts_flt <- lapply(asp_counts_df, function(df) {
   df %>%
     filter(type != "none") %>%
@@ -304,15 +277,6 @@ asp_counts_flt <- lapply(asp_counts_df, function(df) {
     ungroup() %>%
     select(chrom, start, end, type, pat_ratio, strand)
 })
-
-
-
-write.table(asp_counts_flt$GM12878_LaminB1[asp_counts_flt$GM12878_LaminB1$type == "pat",],'./GM12878_LaminB1_ASP_paternal.bed',row.names = F,col.names = F,sep = '\t',quote = F)
-write.table(asp_counts_flt$GM12878_LaminB1[asp_counts_flt$GM12878_LaminB1$type == "mat",],'./GM12878_LaminB1_ASP_maternal.bed',row.names = F,col.names = F,sep = '\t',quote = F)
-
-write.table(asp_counts_flt$GM12878_H3K9me3[asp_counts_flt$GM12878_H3K9me3$type == "pat",],'./GM12878_H3K9me3_ASP_paternal.bed',row.names = F,col.names = F,sep = '\t',quote = F)
-write.table(asp_counts_flt$GM12878_H3K9me3[asp_counts_flt$GM12878_H3K9me3$type == "mat",],'./GM12878_H3K9me3_ASP_maternal.bed',row.names = F,col.names = F,sep = '\t',quote = F)
-
 
 asp_gr <- lapply(asp_counts_flt, function(df){
   lapply(c("pat","mat"), function(x){
