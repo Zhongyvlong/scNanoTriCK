@@ -111,7 +111,7 @@ asp_counts_df <- lapply(asp_counts, function(df) {
     mutate(pat_ratio = nfrags_pat / (nfrags_pat + nfrags_mat))
 })
 
-#call allel specific peak
+#call allel specific peak with Binomial Test
 asp_counts_df <- lapply(asp_counts_df, function(df) {
   df$p_value <- apply(df, 1, function(x) {
     pat <- x[3]
@@ -147,17 +147,6 @@ asp_counts_df <- lapply(names(asp_counts_df), function(x){
   left_join(asp_counts_df[[x]],peak_set[[x]][,c("chrom","start","end","idx","fc")], by = c("subject.id" = "idx"))
 })
 names(asp_counts_df) <- names(peak_set_gr)
-
-ggplot(asp_counts_df$GM12878_LaminB1, aes(x = log10(total_frags), y = pat_ratio)) +
-  geom_point(aes(color = fdr)) +
-  scale_color_viridis_c(direction = -1) +
-  theme_bw()
-
-ggplot(asp_counts_df$GM12878_H3K9me3, aes(x = log10(total_frags), y = pat_ratio)) +
-  geom_point(aes(color = fdr)) +
-  scale_color_viridis_c(direction = -1) +
-  theme_bw()
-
 
 asp_counts_df$GM12878_LaminB1$type <- factor(asp_counts_df$GM12878_LaminB1$type, levels = c("none","mat","pat"))
 asp_counts_df$GM12878_H3K9me3$type <- factor(asp_counts_df$GM12878_H3K9me3$type, levels = c("none","mat","pat"))
