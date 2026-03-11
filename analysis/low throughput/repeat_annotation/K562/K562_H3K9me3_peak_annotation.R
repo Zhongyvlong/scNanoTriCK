@@ -168,11 +168,3 @@ pie(
   labels = labels,
   col = brewer.pal(length(counts), "Set3")
 )
-
-
-
-
-
-
-
-
