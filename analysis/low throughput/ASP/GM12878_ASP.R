@@ -37,9 +37,7 @@ cell_used <- unique(stringr::str_split(names(frag_files), pattern = "_", simplif
 frag_flt <- frag[frag$cell %in% cell_used, ]
 
 #peak file directory
-peak_files <- list.files(path = "/data/csy/zyl_analysis/demultiplex/20250723/GM12878/callpeak", pattern = ".broadPeak", full.names = T) %>%
-  grep(pattern = "CTCF", invert = T, value = T) %>% grep(pattern = "GM12878", value = T)
-peak_files <- peak_files[c(2,4)]
+peak_files <- c("scNanoTriCK_GM12878_H3K9me3.broadPeak","scNanoTriCK_GM12878_LaminB1.broadPeak")
 names(peak_files) <- c("GM12878_H3K9me3","GM12878_LaminB1")
 
 peak_set <- lapply(peak_files, function(x){
