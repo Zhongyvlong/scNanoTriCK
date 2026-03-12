@@ -9,12 +9,12 @@ library(RColorBrewer)
 priority_order <- c(LINE = 1, LTR = 2, SINE = 3, Simple_repeat = 4, Satellite = 5, OthersRepeat = 6)
 
 bed_files <- c(
-  LINE = "LINE_only_coordination.bed",
-  SINE = "SINE_only_coordination.bed", 
-  LTR = "LTR_only_coordination.bed",
-  Satellite = "Satellite_only_coordination.bed",
-  Simple_repeat = "Simple_repeat_only_coordination.bed",
-  OthersRepeat = "OthersRepeat_only_coordination.bed"
+  LINE = "LINE.bed",
+  SINE = "SINE.bed", 
+  LTR = "LTR.bed",
+  Satellite = "Satellite.bed",
+  Simple_repeat = "Simple_repeat.bed",
+  OthersRepeat = "OthersRepeat.bed"
 )
 
 cat("Reading peak file...\n")
