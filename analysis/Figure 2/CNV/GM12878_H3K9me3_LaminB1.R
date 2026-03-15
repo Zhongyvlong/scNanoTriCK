@@ -27,28 +27,10 @@ frag <- pbmclapply(names(frag_files), function(x) {
   do.call(rbind, .)
 
 
-duprm_bam_stats_DuNACHIP250421 <- read.table("/data/csy/zyl_analysis/demultiplex/re_demultiplex_0303_To_0421_data_250725/merged/duprm_bam.stats", header = T)
-duprm_bam_stats_DuNACHIP250421 <- duprm_bam_stats_DuNACHIP250421[,c(1,4)]
-duprm_bam_stats_DuNACHIP250421$protein <- "protein"
-duprm_bam_stats_DuNACHIP250421[grep("^O88",duprm_bam_stats_DuNACHIP250421$cell),"protein"] <- "H3K9me3"
-
-duprm_bam_stats_DuNACHIP250723 <- read.table("/data/csy/zyl_analysis/demultiplex/20250723/GM12878/mapping/duprm_bam.stats", header = T)
-duprm_bam_stats_DuNACHIP250723 <- duprm_bam_stats_DuNACHIP250723[,c(1,4)]
-duprm_bam_stats_DuNACHIP250723$protein <- "protein"
-duprm_bam_stats_DuNACHIP250723[grep("^O78",duprm_bam_stats_DuNACHIP250723$cell),"protein"] <- "H3K9me3"
-duprm_bam_stats_DuNACHIP250723[grep("^O95|^O96",duprm_bam_stats_DuNACHIP250723$cell),"protein"] <- "LaminB1"
-
-
-duprm_stats_GM12878 <- rbind(duprm_bam_stats_DuNACHIP250421, duprm_bam_stats_DuNACHIP250723)
-duprm_stats_GM12878<-duprm_stats_GM12878[duprm_stats_GM12878$protein!="protein",]
-
-
-cell_used <- duprm_stats_GM12878[duprm_stats_GM12878$read_counts>=1000,"cell"]
-
 library(gUtils)
-frag_gr <- dt2gr(frag[frag$cell %in% cell_used, ])
+frag_gr <- dt2gr(frag)
 
-bins <- read.table('/data/ass/genome_file/gencode_ensembl/fasta_hg38/ENSEMBL_2Mb_bin.txt')
+bins <- read.table('ENSEMBL_2Mb_bin.txt')
 colnames(bins) <- c("chrom","start","end")
 bins$start<-bins$start+1
 
