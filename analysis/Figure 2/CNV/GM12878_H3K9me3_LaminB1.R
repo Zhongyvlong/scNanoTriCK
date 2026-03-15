@@ -8,13 +8,11 @@ library(Cairo)
 
 frag_files <- c(
   list.files(
-    path = c("/data/csy/zyl_analysis/demultiplex/re_demultiplex_0303_To_0421_data_250725/merged/GM12878/fragment_dup/",
-             "/data/csy/zyl_analysis/demultiplex/20250723/GM12878/fragment/"),
+    path = c("fragment/"),
     pattern = ".*_flt_fragment.bed$", full.names = TRUE
   )
 )
 
-frag_files <- frag_files[grep("O78|O9[5,6]|O88", frag_files)]
 names(frag_files) <- gsub("(.*)_flt_fragment.bed","\\1",basename(frag_files))
 
 library(pbmcapply)
