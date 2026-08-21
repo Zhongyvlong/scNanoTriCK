@@ -12,8 +12,7 @@ addArchRThreads(threads = 10)
 #haplotyped fragment file directory
 frag_files <- c(
   list.files(
-    path = c("/data/csy/zyl_analysis/demultiplex/re_demultiplex_0303_To_0421_data_250725/merged/GM12878/phasing_bam/",
-             "/data/csy/zyl_analysis/demultiplex/20250723/GM12878/phasing_bam/"),
+    path = "phasing_bam_dir",
     pattern = "_duprm_phased_HP.*.bed.gz$", full.names = TRUE
   )
 )
@@ -308,7 +307,7 @@ lolatest <- function(lola,mc.cores = 5){
 }
 
 
-regionDB <- loadRegionDB("/data/ass/genome_file/LOLA_regionDB/", useCache = T, collections = "hg38")
+regionDB <- loadRegionDB("LOLA_regionDB/", useCache = T, collections = "hg38")
 regionDB$regionAnno
 
 region_sele <- c("PLS","pELS","dELS","DNase-H3K4me3","CTCF-only",
