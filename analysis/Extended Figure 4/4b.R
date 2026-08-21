@@ -3,7 +3,7 @@ library(ggplot2)
 
 
 signal_in_bin_with_different_repetitive_element_density <-
-  read.table("Figure2b_ChIP-seq_GM12878_H3K9me3.txt",
+  read.table("Ex4b_ChIP-seqs_GM12878_LaminB1.txt",
               header = F)
 ggplot(signal_in_bin_with_different_repetitive_element_density, aes(x = log2(Sum_Signal), y = repeat_percentage)) +
   ggrastr::rasterise(geom_pointdensity(method = 'neighbors', adjust = 0.5), dpi = 300) +
@@ -23,7 +23,7 @@ ggplot(signal_in_bin_with_different_repetitive_element_density, aes(x = log2(Sum
 
 
 signal_in_bin_with_different_repetitive_element_density <-
-  read.table("Figure2b_scNanoTriCK_GM12878_H3K9me3.txt",
+  read.table("Ex4b_scNanoTriCK_GM12878_LaminB1.txt",
               header = F)
 ggplot(signal_in_bin_with_different_repetitive_element_density, aes(x = log2(Sum_Signal), y = repeat_percentage)) +
   ggrastr::rasterise(geom_pointdensity(method = 'neighbors', adjust = 0.5), dpi = 300) +
